@@ -104,9 +104,12 @@ public class Nb2 {
         System.out.println("List splited");
         //30 seconds
         
+        System.out.println("Creating empty maps");
         Map posiMap = new HashMap();
         Map negaMap = new HashMap();
+        System.out.println("Empty Maps created");
         
+        System.out.println("Inserting words into map, and updating values");
         for (int i = 0; i < train.size(); i++){
             String elements[] = train.get(i).split(" ");
             if (elements[1].equals("1") || elements[1].equals("positive")){
@@ -136,13 +139,38 @@ public class Nb2 {
             else if (!elements[1].equals("neutral")) 
                 System.out.println("Refine your data" + elements[1]);
         }
+        System.out.println("Maps are ready");
         
         //34 seconds
         //like extra 20 seconds to run these 2 line
         //System.out.println(posiMap.entrySet());
         //System.out.println(negaMap.values());
-        
-        
+        int b15 = posiMap.size();
+        int c15 = negaMap.size();
+        int total = b15 + c15;
+        double f15 = (double)b15 / total;
+        double g15 = (double)c15 / total;
+        System.out.println("Begin the classifying process:");
+        for (int i = 0; i < test.size(); i++){
+            String elements[] = test.get(i).split(" ");
+            if (!elements[1].equals("neutral")) {
+                String target;
+                if (elements[1].equals("1") || elements[1].equals("positive"))
+                    target = "positive";
+                else
+                    target = "negative";
+                System.out.print("Sentence: ");
+                System.out.print("\t");
+                for (int j = 2; j < elements.length; j++){
+                    System.out.print(elements[j] + " ");
+                }
+                System.out.print("\n");
+                
+                System.out.println("Target: \t" + target);
+                
+                
+            }
+        }
         
         
         
