@@ -75,13 +75,25 @@ public class Nb2 {
         fileName = "C:\\Users\\YH Jonathan Kwok\\PycharmProjects\\tweepyPractice\\SentimentAnalysisDataset.txt"; //testTestTweets.txt"; //
         fr = new FileReader(fileName);
         br = new BufferedReader(fr);
-        //int lineCounter = 0;
-        while((line = br.readLine()) != null){// && lineCounter < 1500000){
+        int lineCounter = 0;
+        while((line = br.readLine()) != null && lineCounter < 1300000){ //800000){6519
             line = line.toLowerCase();
             line = removeRepeatedChars(line, 2);
             line = line.replaceAll("[^0-9a-z ]", " ");
             list.add(line);
-            //lineCounter++;
+            lineCounter++;
+        }
+        
+        ArrayList<String> stopWords = new ArrayList<>();
+        int stopWordsCount = 0;
+        fileName = "C:\\Users\\YH Jonathan Kwok\\PycharmProjects\\tweepyPractice\\stopWords.txt";
+        fr = new FileReader(fileName);
+        br = new BufferedReader(fr);
+        while((line = br.readLine()) != null){
+            line = line.toLowerCase();
+            line = removeRepeatedChars(line, 2);
+            line = line.replaceAll("[^0-9a-z ]", " ");
+            stopWords.add(line);
         }
         
         System.out.println("Tweets added to list");
@@ -118,6 +130,9 @@ public class Nb2 {
                     if(posiMap.containsKey(elements[j])){
                         posiMap.replace(elements[j], posiMap.get(elements[j]), ((int)posiMap.get(elements[j]) + 1));
                     }
+                    else if(stopWords.contains(elements[j])){
+                        stopWordsCount++;
+                    }
                     //else means the word is not in yet
                     else {
                         posiMap.put(elements[j], (int)1);
@@ -130,6 +145,9 @@ public class Nb2 {
                     if(negaMap.containsKey(elements[j])){
                         negaMap.replace(elements[j], negaMap.get(elements[j]), ((int)negaMap.get(elements[j]) + 1));
                     }
+                    else if(stopWords.contains(elements[j])){
+                        stopWordsCount++;
+                    }
                     //else means the word is not in yet
                     else {
                         negaMap.put(elements[j], (int)1);
@@ -139,6 +157,7 @@ public class Nb2 {
             else if (!elements[1].equals("neutral")) 
                 System.out.println("Refine your data" + elements[1]);
         }
+        System.out.println(stopWordsCount + " stop words skipped");
         System.out.println("Maps are ready");
         
         //34 seconds
@@ -151,31 +170,68 @@ public class Nb2 {
         double f15 = (double)b15 / total;
         double g15 = (double)c15 / total;
         System.out.println("Begin the classifying process:");
+        int mCount = 0;
         for (int i = 0; i < test.size(); i++){
             String elements[] = test.get(i).split(" ");
+            double posiScore = f15;
+            double negaScore = g15;
             if (!elements[1].equals("neutral")) {
                 String target;
                 if (elements[1].equals("1") || elements[1].equals("positive"))
                     target = "positive";
                 else
                     target = "negative";
-                System.out.print("Sentence: ");
-                System.out.print("\t");
+                //System.out.print("Sentence: \t");
                 for (int j = 2; j < elements.length; j++){
-                    System.out.print(elements[j] + " ");
+                    //System.out.print(elements[j] + " ");
+                    //posiScore
+                    if (posiMap.containsKey(elements[j])) {
+                        int tempInt = (int)posiMap.get(elements[j]);
+                        posiScore *= ((double)tempInt / b15);
+                    }
+                    //negaScore
+                    if (negaMap.containsKey(elements[j])) {
+                        int tempInt = (int)negaMap.get(elements[j]);
+                        negaScore *= ((double)tempInt / c15);
+                    }
                 }
-                System.out.print("\n");
+                //System.out.print("\n");
                 
-                System.out.println("Target: \t" + target);
+                //System.out.println("Target: \t" + target);
+                //2:57
+                String predict;
+                if (posiScore > negaScore){
+                    predict = "positive";
+                    //System.out.print("Predict: \t" + predict + "\n");
+                }
+                else if (negaScore > posiScore){
+                    predict = "negative";
+                    //System.out.print("Predict: \t" + predict + "\n");
+                }
+                else {
+                    predict = "\t\tTIE!!!";
+                    //System.out.print("Predict: \t" + predict + "\n");
+                }
+                    
+                String result;
+                if (predict.equals(target)){
+                    result = "matched";
+                    mCount++;
+                }
+                else
+                    result = "missed";
                 
+                System.out.println("Result: \t" + result);
+                if (result.equals("missed")){
+                    System.out.println(predict + " " + posiScore + " " + negaScore);
+                }
                 
             }
         }
-        
-        
-        
-        
-        
+        double accuracy = (double)mCount / test.size() * 100;
+        System.out.println("Accuracy: " + accuracy + "%");
+        System.out.println("posiMap.size(): " + posiMap.size());
+        System.out.println("negaMap.size(): " + negaMap.size());
     }
     
 }
