@@ -1,0 +1,5 @@
+1 positive I feel happy this morning.
+2 positive Larry is my friend.
+3 negative I do not like that man.
+4 negative My house is not great.
+5 negative Your song is annoying.

@@ -1,0 +1,10 @@
+1 positive I love this car.
+2 positive This view is amazing.
+3 positive I feel great this morning.
+4 positive I am so excited about the happy concert.
+5 positive He is my best friend.
+6 negative I do not like this car.
+7 negative This view is horrible.
+8 negative I feel tired this morning.
+9 negative I am not looking forward to the concert.
+10 negative He is my annoying enemy.
