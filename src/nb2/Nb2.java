@@ -76,7 +76,7 @@ public class Nb2 {
         fr = new FileReader(fileName);
         br = new BufferedReader(fr);
         int lineCounter = 0;
-        while((line = br.readLine()) != null && lineCounter < 1300000){ //800000){6519
+        while((line = br.readLine()) != null && lineCounter < 800000){ //800000){
             line = line.toLowerCase();
             line = removeRepeatedChars(line, 2);
             line = line.replaceAll("[^0-9a-z ]", " ");
@@ -86,7 +86,8 @@ public class Nb2 {
         
         ArrayList<String> stopWords = new ArrayList<>();
         int stopWordsCount = 0;
-        fileName = "C:\\Users\\YH Jonathan Kwok\\PycharmProjects\\tweepyPractice\\stopWords.txt";
+        //63.77 w/ nothing
+        fileName = "C:\\Users\\YH Jonathan Kwok\\PycharmProjects\\tweepyPractice\\stopCommon.txt";//65.44 only this
         fr = new FileReader(fileName);
         br = new BufferedReader(fr);
         while((line = br.readLine()) != null){
@@ -95,6 +96,38 @@ public class Nb2 {
             line = line.replaceAll("[^0-9a-z ]", " ");
             stopWords.add(line);
         }
+        
+        fileName = "C:\\Users\\YH Jonathan Kwok\\PycharmProjects\\tweepyPractice\\stopCountryGoo.txt";//64.77 only this
+        fr = new FileReader(fileName);
+        br = new BufferedReader(fr);
+        while((line = br.readLine()) != null){
+            line = line.toLowerCase();
+            line = removeRepeatedChars(line, 2);
+            line = line.replaceAll("[^0-9a-z ]", " ");
+            stopWords.add(line);
+        }
+        //65.32 sum of the above
+        
+        /*fileName = "C:\\Users\\YH Jonathan Kwok\\PycharmProjects\\tweepyPractice\\stopLong.txt";//64.12
+        fr = new FileReader(fileName);
+        br = new BufferedReader(fr);
+        while((line = br.readLine()) != null){
+            line = line.toLowerCase();
+            line = removeRepeatedChars(line, 2);
+            line = line.replaceAll("[^0-9a-z ]", " ");
+            stopWords.add(line);
+        }
+        
+        fileName = "C:\\Users\\YH Jonathan Kwok\\PycharmProjects\\tweepyPractice\\stopSQL.txt";//64.08
+        fr = new FileReader(fileName);
+        br = new BufferedReader(fr);
+        while((line = br.readLine()) != null){
+            line = line.toLowerCase();
+            line = removeRepeatedChars(line, 2);
+            line = line.replaceAll("[^0-9a-z ]", " ");
+            stopWords.add(line);
+        }*/
+        //65.18
         
         System.out.println("Tweets added to list");
         
@@ -221,17 +254,17 @@ public class Nb2 {
                 else
                     result = "missed";
                 
-                System.out.println("Result: \t" + result);
-                if (result.equals("missed")){
-                    System.out.println(predict + " " + posiScore + " " + negaScore);
-                }
+                //System.out.println("Result: \t" + result);
+                //if (result.equals("missed")){
+                    //System.out.println(predict + " " + posiScore + " " + negaScore);
+                //}
                 
             }
         }
         double accuracy = (double)mCount / test.size() * 100;
         System.out.println("Accuracy: " + accuracy + "%");
-        System.out.println("posiMap.size(): " + posiMap.size());
-        System.out.println("negaMap.size(): " + negaMap.size());
+        //System.out.println("posiMap.size(): " + posiMap.size());
+        //System.out.println("negaMap.size(): " + negaMap.size());
     }
     
 }
